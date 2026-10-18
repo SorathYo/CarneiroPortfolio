@@ -1,10 +1,23 @@
+import { Footer, MobileHeader, Sidebar, UtilityDock } from "@/components/layout"
+import { About, Certificates, Contact, Hero, Work } from "@/sections"
 
- function App() {
+/** Composição da página: menu lateral + controles + seções na ordem do design. */
+export default function App() {
   return (
-    <div>
-      <p>Hello World</p>
+    <div className="min-h-screen">
+      <Sidebar />
+
+      <main className="ml-[225px] overflow-hidden max-lg:ml-[190px] max-md:ml-0">
+        <MobileHeader />
+        <UtilityDock />
+
+        <Hero />
+        <About />
+        <Work />
+        <Certificates />
+        <Contact />
+        <Footer />
+      </main>
     </div>
   )
 }
-
-export default App
