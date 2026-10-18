@@ -38,6 +38,7 @@ export default function Hero() {
           className="mt-[19px] mb-[25px] min-h-[1em] font-display text-[clamp(20px,2.1vw,30px)] leading-none font-bold tracking-[4px] text-fg/90 max-md:text-xl max-md:tracking-[2.5px]"
         >
           {typed.role}
+          <span aria-hidden="true" className="terminal-cursor" />
         </h2>
 
         <p className="copy max-w-[470px] text-lg leading-normal text-fg-soft max-md:max-w-[510px] max-md:text-base">

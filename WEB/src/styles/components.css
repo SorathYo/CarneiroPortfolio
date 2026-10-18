@@ -38,6 +38,28 @@
 @layer components {
   /* ---- Hero -------------------------------------------------------------- */
 
+  .terminal-cursor {
+    display: inline-block;
+    width: 0.48em;
+    height: 0.78em;
+    margin-left: 0.14em;
+    background: #fff;
+    vertical-align: -0.08em;
+    animation: terminal-blink 1s steps(2, start) infinite;
+  }
+
+  @keyframes terminal-blink {
+    to {
+      visibility: hidden;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .terminal-cursor {
+      animation: none;
+    }
+  }
+
   /* Grade vermelha esmaecendo para a direita. */
   .hero-grid {
     position: absolute;
