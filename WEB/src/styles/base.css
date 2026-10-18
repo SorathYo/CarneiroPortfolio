@@ -1,0 +1,56 @@
+/* Estilos globais (elementos HTML, não componentes). */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 30px;
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--fg);
+  }
+
+  body {
+    min-width: 320px;
+    min-height: 100vh;
+    background:
+      radial-gradient(
+        circle at 80% 10%,
+        color-mix(in srgb, var(--brand) 8%, transparent),
+        transparent 28rem
+      ),
+      var(--bg);
+  }
+
+  a,
+  button {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Foco visível em todo elemento interativo (acessibilidade). */
+  :focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 3px;
+  }
+
+  @media (max-width: 800px) {
+    html {
+      scroll-padding-top: 70px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+/* "Aumentar fonte": escala o rem e reforça os textos de leitura (.copy).
+   Fica fora de @layer de propósito, para vencer os utilitários de tamanho. */
+:root.large-text {
+  font-size: 112.5%;
+}
+
+:root.large-text .copy {
+  font-size: max(1.05rem, 1.15em);
+}

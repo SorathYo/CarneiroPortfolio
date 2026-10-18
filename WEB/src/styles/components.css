@@ -1,0 +1,219 @@
+/* ==========================================================================
+   VISUAIS ESPECIAIS
+   --------------------------------------------------------------------------
+   Só o que não é prático (ou legível) escrever como utilitário Tailwind:
+   cantos recortados (clip-path), sobreposições da foto do Hero e os
+   mockups dos cards de projeto. Todo o resto fica nas classes dos componentes.
+   ========================================================================== */
+
+/* ---- Cantos recortados (assinatura do design) ----------------------------- */
+
+@utility clip-cut {
+  clip-path: polygon(
+    10px 0,
+    100% 0,
+    100% calc(100% - 10px),
+    calc(100% - 10px) 100%,
+    0 100%,
+    0 10px
+  );
+}
+
+@utility clip-cut-sm {
+  clip-path: polygon(
+    8px 0,
+    100% 0,
+    100% calc(100% - 8px),
+    calc(100% - 8px) 100%,
+    0 100%,
+    0 8px
+  );
+}
+
+/* Seções: só o canto superior direito é cortado. */
+@utility clip-panel {
+  clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 0 100%);
+}
+
+@layer components {
+  /* ---- Hero -------------------------------------------------------------- */
+
+  /* Grade vermelha esmaecendo para a direita. */
+  .hero-grid {
+    position: absolute;
+    inset: 0 45% 0 0;
+    opacity: 0.13;
+    background-image:
+      linear-gradient(color-mix(in srgb, var(--brand) 40%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in srgb, var(--brand) 40%, transparent) 1px, transparent 1px);
+    background-size: 55px 55px;
+    mask-image: linear-gradient(90deg, black, transparent);
+  }
+
+  /* Degradê no pé do Hero, fundindo com a próxima seção. */
+  .hero-fade {
+    position: absolute;
+    inset: auto 0 0;
+    z-index: 3;
+    height: 28%;
+    background: linear-gradient(transparent, var(--hero));
+    pointer-events: none;
+  }
+
+  /* Sobreposições da foto: degradê lateral/inferior + tom vermelho + vinheta. */
+  .hero-photo::before,
+  .hero-photo::after {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    content: "";
+  }
+
+  .hero-photo::before {
+    background:
+      linear-gradient(
+        90deg,
+        var(--hero) 0%,
+        color-mix(in srgb, var(--hero) 84%, transparent) 14%,
+        transparent 46%
+      ),
+      linear-gradient(0deg, var(--hero) 0%, transparent 38%),
+      rgba(152, 0, 19, 0.32);
+  }
+
+  .hero-photo::after {
+    background: radial-gradient(
+      circle at 62% 45%,
+      transparent 20%,
+      rgba(0, 0, 0, 0.62) 88%
+    );
+  }
+
+  :root[data-theme="light"] .hero-photo::before {
+    background:
+      linear-gradient(90deg, var(--hero) 0%, color-mix(in srgb, var(--hero) 88%, transparent) 14%, transparent 46%),
+      linear-gradient(0deg, var(--hero) 0%, transparent 38%),
+      rgba(152, 0, 19, 0.18);
+  }
+
+  :root[data-theme="light"] .hero-photo::after {
+    background: radial-gradient(
+      circle at 62% 45%,
+      transparent 20%,
+      rgba(0, 0, 0, 0.25) 88%
+    );
+  }
+
+  @media (max-width: 800px) {
+    .hero-photo::before {
+      background:
+        linear-gradient(
+          0deg,
+          var(--hero) 4%,
+          color-mix(in srgb, var(--hero) 86%, transparent) 35%,
+          transparent 70%
+        ),
+        linear-gradient(90deg, color-mix(in srgb, var(--hero) 40%, transparent), transparent),
+        rgba(150, 0, 18, 0.18);
+    }
+  }
+
+  /* ---- Mockups dos projetos ---------------------------------------------- */
+
+  .project-preview {
+    position: relative;
+    height: 130px;
+    overflow: hidden;
+    border-bottom: 1px solid color-mix(in srgb, var(--brand) 35%, transparent);
+    background:
+      radial-gradient(circle at 75% 35%, color-mix(in srgb, var(--brand) 25%, transparent), transparent 35%),
+      #0c0c0e;
+  }
+
+  :root[data-theme="light"] .project-preview {
+    background:
+      radial-gradient(circle at 75% 35%, color-mix(in srgb, var(--brand) 22%, transparent), transparent 35%),
+      #202024;
+  }
+
+  /* Brilho diagonal. */
+  .project-preview::after {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(115deg, transparent 45%, rgba(255, 255, 255, 0.05) 47%, transparent 50%);
+    content: "";
+  }
+
+  .preview-top {
+    display: flex;
+    height: 21px;
+    align-items: center;
+    gap: 4px;
+    padding: 0 8px;
+    border-bottom: 1px solid #28282c;
+  }
+
+  .preview-top i {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--brand);
+  }
+
+  .preview-sidebar {
+    position: absolute;
+    inset: 21px auto 0 0;
+    width: 23%;
+    border-right: 1px solid #252529;
+    background: #08080a;
+  }
+
+  .preview-content {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin: 16px 10px 0 29%;
+  }
+
+  .preview-content b {
+    grid-column: 1 / -1;
+    width: 55%;
+    height: 8px;
+    background: #39393e;
+  }
+
+  .preview-content span {
+    height: 48px;
+    border: 1px solid #29292e;
+    background: linear-gradient(145deg, color-mix(in srgb, var(--brand) 12%, transparent), #101014);
+  }
+
+  /* Variantes (atributo data-variant no card). */
+  .project-preview[data-variant="store"] .preview-content span:nth-last-child(2) {
+    background: linear-gradient(145deg, #dedede, #555);
+    clip-path: polygon(20% 45%, 78% 20%, 90% 60%, 38% 76%);
+  }
+
+  .project-preview[data-variant="portfolio"] .preview-sidebar {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--brand) 32%, transparent), #08080a);
+  }
+
+  /* Tablet/celular: o mockup vira coluna ao lado do texto e depois volta ao topo. */
+  @media (max-width: 800px) {
+    .project-preview {
+      height: 100%;
+      min-height: 205px;
+      border-right: 1px solid color-mix(in srgb, var(--brand) 35%, transparent);
+      border-bottom: 0;
+    }
+  }
+
+  @media (max-width: 540px) {
+    .project-preview {
+      height: 150px;
+      min-height: 0;
+      border-right: 0;
+      border-bottom: 1px solid color-mix(in srgb, var(--brand) 35%, transparent);
+    }
+  }
+}

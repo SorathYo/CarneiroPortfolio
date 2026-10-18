@@ -1,0 +1,118 @@
+/* ==========================================================================
+   TOKENS DE DESIGN
+   --------------------------------------------------------------------------
+   1. Variáveis CSS por tema  (:root, [data-theme="light"], .high-contrast)
+   2. @theme                  (fontes, breakpoints, animações, sombras)
+   3. @theme inline           (expõe as variáveis como utilitários Tailwind:
+                               bg-bg, text-fg, border-line, text-brand ...)
+   ========================================================================== */
+
+/* ---- 1. Variáveis por tema ------------------------------------------------ */
+
+/* Escuro (padrão) */
+:root {
+  color-scheme: dark;
+
+  --brand: #f20d2f;
+  --line: rgba(242, 13, 47, 0.42);
+  --card-line: color-mix(in srgb, var(--brand) 25%, transparent);
+
+  --bg: #050505;
+  --fg: #f3f3f3;
+  --fg-soft: #b8b8c0; /* parágrafos principais */
+  --fg-muted: #94949d; /* textos secundários */
+  --fg-faint: #62626a; /* rodapé, rótulos pequenos */
+
+  --sidebar: #070707;
+  --panel: rgba(7, 7, 7, 0.92);
+  --hero: #060606;
+  --card: #08080a;
+  --control: rgba(9, 9, 9, 0.92);
+  --track: #202024; /* trilho do switch */
+  --nav: #b5b5bd; /* links do menu lateral */
+}
+
+/* Claro */
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --brand: #c90024;
+  --line: rgba(174, 0, 30, 0.35);
+
+  --bg: #f3f1ed;
+  --fg: #17171b;
+  --fg-soft: #45454d;
+  --fg-muted: #55555d;
+  --fg-faint: #6b6b73;
+
+  --sidebar: #f9f8f5;
+  --panel: rgba(255, 255, 255, 0.92);
+  --hero: #eceae6;
+  --card: #fbfaf8;
+  --control: rgba(255, 255, 255, 0.94);
+  --track: #dad8d4;
+  --nav: #4d4d54;
+}
+
+/* Alto contraste (combina com dark e light) */
+:root.high-contrast {
+  --brand: #ff1744;
+  --line: rgba(255, 23, 68, 0.88);
+  --card-line: var(--brand);
+  --fg-soft: var(--fg);
+  --fg-muted: var(--fg);
+  --fg-faint: var(--fg);
+}
+
+:root.high-contrast[data-theme="light"] {
+  --brand: #a8001e;
+  --line: rgba(110, 0, 20, 0.85);
+}
+
+/* ---- 2. Tema do Tailwind -------------------------------------------------- */
+
+@theme {
+  --font-display: "Barlow Condensed", sans-serif;
+  --font-body: "Rajdhani", sans-serif;
+
+  /* Breakpoints do design (usados com max-*: max-lg, max-md, max-sm).
+     max-lg = até 1180px · max-md = até 800px · max-sm = até 540px */
+  --breakpoint-*: initial;
+  --breakpoint-sm: 541px;
+  --breakpoint-md: 801px;
+  --breakpoint-lg: 1181px;
+
+  --animate-gear: gear-spin 35s linear infinite;
+
+  --shadow-glow: 0 0 30px color-mix(in srgb, var(--brand) 35%, transparent);
+  --shadow-glow-sm: 0 0 22px color-mix(in srgb, var(--brand) 12%, transparent);
+  --drop-shadow-brand: 0 0 12px color-mix(in srgb, var(--brand) 70%, transparent);
+
+  @keyframes gear-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+/* ---- 3. Variáveis -> utilitários ------------------------------------------ */
+
+@theme inline {
+  --color-brand: var(--brand);
+  --color-line: var(--line);
+  --color-card-line: var(--card-line);
+
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-fg-soft: var(--fg-soft);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-faint: var(--fg-faint);
+
+  --color-sidebar: var(--sidebar);
+  --color-panel: var(--panel);
+  --color-hero: var(--hero);
+  --color-card: var(--card);
+  --color-control: var(--control);
+  --color-track: var(--track);
+  --color-nav: var(--nav);
+}
