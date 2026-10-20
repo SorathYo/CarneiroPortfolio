@@ -1,5 +1,5 @@
 import { Suspense, lazy, useEffect, useRef, useState } from "react"
-import { Icon, Panel, SectionTitle } from "@/components/ui"
+import { Gear, Icon, Panel, SectionTitle } from "@/components/ui"
 import { useLanguage } from "@/context"
 import {
   CERTIFICATES,
@@ -104,8 +104,9 @@ export default function Certificates() {
           return (
             <article
               key={certificate.id}
-              className="relative min-h-[265px] overflow-hidden border border-card-line bg-card bg-linear-145 from-brand/7 to-transparent to-45% p-[26px] transition duration-200 after:absolute after:-right-9 after:-bottom-[58px] after:size-[150px] after:rounded-full after:border-[12px] after:border-dashed after:border-brand/8 after:transition after:duration-300 hover:-translate-y-1 hover:border-brand hover:shadow-[0_18px_45px_rgba(0,0,0,.4)] hover:after:rotate-[15deg] hover:after:border-brand/20"
+              className="relative min-h-[265px] overflow-hidden border border-card-line bg-card bg-linear-145 from-brand/7 to-transparent to-45% p-[26px] transition duration-200 hover:-translate-y-1 hover:border-brand hover:shadow-[0_18px_45px_rgba(0,0,0,.4)]"
             >
+              <Gear className="right-[-36px] -bottom-[58px] z-0 w-[150px] opacity-[0.08]" />
               <div
                 aria-hidden="true"
                 className="absolute top-[17px] right-5 font-display text-5xl leading-none font-extrabold text-brand/13"
