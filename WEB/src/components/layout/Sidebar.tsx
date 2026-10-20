@@ -52,7 +52,7 @@ export default function Sidebar() {
         </a>
       </div>
 
-      <Gear className="right-20 -bottom-[100px] w-[190px] opacity-50" />
+      <Gear className="right-20 -bottom-[100px] w-[190px] opacity-[0.16]" />
     </aside>
   )
 }

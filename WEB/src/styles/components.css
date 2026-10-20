@@ -42,7 +42,7 @@
     mask-repeat: no-repeat;
     mask-position: center;
     mask-size: contain;
-    filter: drop-shadow(0 0 4px color-mix(in srgb, var(--brand) 35%, transparent));
+    filter: drop-shadow(0 0 4px color-mix(in srgb, var(--brand) 18%, transparent));
   }
 
   .certificate-dialog {
