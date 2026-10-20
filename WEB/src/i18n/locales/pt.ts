@@ -125,7 +125,7 @@ export const pt: Translations = {
     button: "ENTRAR EM CONTATO",
   },
   footer: [
-    "DESENVOLVIDO COM DEDICAÇÃO E MUITO CAFÉ",
-    "CAIO CARNEIRO / PORTFÓLIO / 2025",
+    "DESENVOLVIDO COM DEDICAÇÃO E MUITO ENERGÉTICO",
+    "CAIO CARNEIRO / PORTFÓLIO / 2026",
   ],
 }

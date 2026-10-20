@@ -122,7 +122,7 @@ export const en: Translations = {
     button: "GET IN TOUCH",
   },
   footer: [
-    "BUILT WITH DEDICATION AND LOTS OF COFFEE",
-    "CAIO CARNEIRO / PORTFOLIO / 2025",
+    "BUILT WITH DEDICATION AND LOTS OF ENERGY DRINKS",
+    "CAIO CARNEIRO / PORTFOLIO / 2026",
   ],
 }
