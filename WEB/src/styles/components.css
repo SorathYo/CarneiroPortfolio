@@ -305,7 +305,7 @@
     width: 0.48em;
     height: 0.78em;
     margin-left: 0.14em;
-    background: #fff;
+    background: var(--fg);
     vertical-align: -0.08em;
     animation: terminal-blink 1s steps(2, start) infinite;
   }
