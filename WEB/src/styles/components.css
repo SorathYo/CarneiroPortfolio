@@ -58,15 +58,6 @@
     display: flex;
   }
 
-  .certificate-dialog.is-fullscreen {
-    inset: 0;
-    width: 100vw;
-    height: 100dvh;
-    max-height: 100dvh;
-    margin: 0;
-    border: 0;
-  }
-
   .certificate-dialog::backdrop {
     background: rgba(0, 0, 0, 0.78);
     backdrop-filter: blur(5px);
@@ -159,6 +150,28 @@
     background: var(--card);
   }
 
+  .certificate-dialog__viewer.is-fullscreen {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    padding: 68px 24px 24px;
+    background: var(--bg);
+  }
+
+  .certificate-viewer-fullscreen-controls {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    border: 1px solid var(--card-line);
+    background: var(--card);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  }
+
   .certificate-dialog__viewer .react-pdf__Document {
     width: 100%;
     height: 100%;
@@ -208,11 +221,6 @@
       max-height: calc(100dvh - 20px);
     }
 
-    .certificate-dialog.is-fullscreen {
-      width: 100vw;
-      max-height: 100dvh;
-    }
-
     .certificate-dialog__header {
       padding: 16px;
     }
@@ -227,6 +235,17 @@
 
     .certificate-dialog__viewer {
       padding: 0 8px 8px;
+    }
+
+    .certificate-dialog__viewer.is-fullscreen {
+      padding: 64px 8px 12px;
+    }
+
+    .certificate-viewer-fullscreen-controls {
+      top: 8px;
+      right: 8px;
+      gap: 4px;
+      padding: 5px;
     }
 
     .certificate-dialog__toolbar {

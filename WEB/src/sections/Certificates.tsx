@@ -23,6 +23,7 @@ export default function Certificates() {
   const [viewerReady, setViewerReady] = useState(false)
   const [pageCount, setPageCount] = useState(0)
   const [pageNumber, setPageNumber] = useState(1)
+  const [viewportHeight, setViewportHeight] = useState(window.innerHeight)
 
   const closeViewer = () => {
     dialogRef.current?.close()
@@ -34,6 +35,12 @@ export default function Certificates() {
       setViewerReady(true)
     }
   }, [selectedDocumentId])
+
+  useEffect(() => {
+    const updateViewportHeight = () => setViewportHeight(window.innerHeight)
+    window.addEventListener("resize", updateViewportHeight)
+    return () => window.removeEventListener("resize", updateViewportHeight)
+  }, [])
 
   const openCourse = (course: "full-stack" | "other-courses") => {
     setActiveCourse(course)
@@ -74,10 +81,9 @@ export default function Certificates() {
         : t.certificates.viewOtherCourses
   const pageHeight = Math.max(
     90,
-    Math.min(
-      window.innerHeight * (isFullscreen ? 0.72 : 0.52),
-      window.innerHeight - (isFullscreen ? 220 : 280),
-    ),
+    isFullscreen
+      ? viewportHeight - 112
+      : Math.min(viewportHeight * 0.52, viewportHeight - 280),
   )
 
   return (
@@ -143,7 +149,7 @@ export default function Certificates() {
         <dialog
           ref={dialogRef}
           aria-labelledby="certificate-viewer-title"
-          className={`certificate-dialog${isFullscreen ? " is-fullscreen" : ""}`}
+          className="certificate-dialog"
           onClose={() => {
             setSelectedDocumentId(null)
             setShowDocuments(false)
@@ -159,7 +165,10 @@ export default function Certificates() {
           }}
         >
           <div className="certificate-dialog__content">
-            <header className="certificate-dialog__header">
+            <header
+              className="certificate-dialog__header"
+              inert={isFullscreen}
+            >
               <div>
                 <span className="text-[9px] font-bold tracking-[1.5px] text-brand uppercase">
                   {t.certificates.viewerLabel}
@@ -181,7 +190,10 @@ export default function Certificates() {
               </button>
             </header>
 
-            <div className="certificate-dialog__toolbar">
+            <div
+              className="certificate-dialog__toolbar"
+              inert={isFullscreen}
+            >
               <button
                 type="button"
                 aria-expanded={showDocuments}
@@ -191,54 +203,53 @@ export default function Certificates() {
                 <Icon name="layers" size={17} />
                 {courseToggleLabel}
               </button>
-              <div className="flex items-center gap-3">
-                {pageCount > 0 && (
-                  <>
-                    <button
-                      type="button"
-                      aria-label={t.certificates.previousPage}
-                      disabled={pageNumber <= 1}
-                      onClick={() => setPageNumber((page) => Math.max(1, page - 1))}
-                      className="certificate-page-button"
-                    >
-                      &lt;
-                    </button>
-                    <span className="text-[11px] tracking-[1px] text-fg-muted">
-                      {t.certificates.pageCount(pageNumber, pageCount)}
-                    </span>
-                    <button
-                      type="button"
-                      aria-label={t.certificates.nextPage}
-                      disabled={pageNumber >= pageCount}
-                      onClick={() =>
-                        setPageNumber((page) => Math.min(pageCount, page + 1))
-                      }
-                      className="certificate-page-button"
-                    >
-                      &gt;
-                    </button>
-                  </>
-                )}
-                <button
-                  type="button"
-                  aria-label={
-                    isFullscreen
-                      ? t.certificates.exitFullScreen
-                      : t.certificates.fullScreen
-                  }
-                  aria-pressed={isFullscreen}
-                  onClick={() => setIsFullscreen((value) => !value)}
-                  className="certificate-page-button"
-                >
-                  <Icon name={isFullscreen ? "minimize" : "maximize"} size={18} />
-                </button>
-              </div>
+              {!isFullscreen && (
+                <div className="flex items-center gap-3">
+                  {pageCount > 0 && (
+                    <>
+                      <button
+                        type="button"
+                        aria-label={t.certificates.previousPage}
+                        disabled={pageNumber <= 1}
+                        onClick={() => setPageNumber((page) => Math.max(1, page - 1))}
+                        className="certificate-page-button"
+                      >
+                        &lt;
+                      </button>
+                      <span className="text-[11px] tracking-[1px] text-fg-muted">
+                        {t.certificates.pageCount(pageNumber, pageCount)}
+                      </span>
+                      <button
+                        type="button"
+                        aria-label={t.certificates.nextPage}
+                        disabled={pageNumber >= pageCount}
+                        onClick={() =>
+                          setPageNumber((page) => Math.min(pageCount, page + 1))
+                        }
+                        className="certificate-page-button"
+                      >
+                        &gt;
+                      </button>
+                    </>
+                  )}
+                  <button
+                    type="button"
+                    aria-label={t.certificates.fullScreen}
+                    aria-pressed="false"
+                    onClick={() => setIsFullscreen(true)}
+                    className="certificate-page-button"
+                  >
+                    <Icon name="maximize" size={18} />
+                  </button>
+                </div>
+              )}
             </div>
 
             {showDocuments && (
               <nav
                 aria-label={courseToggleLabel}
                 className="certificate-dialog__documents"
+                inert={isFullscreen}
               >
                 {activeCourse === "full-stack" ? (
                   <>
@@ -287,7 +298,57 @@ export default function Certificates() {
               </nav>
             )}
 
-            <div className="certificate-dialog__viewer">
+            <div
+              className={`certificate-dialog__viewer${isFullscreen ? " is-fullscreen" : ""}`}
+            >
+              {isFullscreen && (
+                <div className="certificate-viewer-fullscreen-controls">
+                  {pageCount > 0 && (
+                    <>
+                      <button
+                        type="button"
+                        aria-label={t.certificates.previousPage}
+                        disabled={pageNumber <= 1}
+                        onClick={() => setPageNumber((page) => Math.max(1, page - 1))}
+                        className="certificate-page-button"
+                      >
+                        &lt;
+                      </button>
+                      <span className="text-[11px] tracking-[1px] text-fg-muted">
+                        {t.certificates.pageCount(pageNumber, pageCount)}
+                      </span>
+                      <button
+                        type="button"
+                        aria-label={t.certificates.nextPage}
+                        disabled={pageNumber >= pageCount}
+                        onClick={() =>
+                          setPageNumber((page) => Math.min(pageCount, page + 1))
+                        }
+                        className="certificate-page-button"
+                      >
+                        &gt;
+                      </button>
+                    </>
+                  )}
+                  <button
+                    type="button"
+                    aria-label={t.certificates.exitFullScreen}
+                    aria-pressed="true"
+                    onClick={() => setIsFullscreen(false)}
+                    className="certificate-page-button"
+                  >
+                    <Icon name="minimize" size={18} />
+                  </button>
+                  <button
+                    type="button"
+                    aria-label={t.certificates.closeViewer}
+                    onClick={closeViewer}
+                    className="certificate-page-button"
+                  >
+                    <Icon name="close" size={18} />
+                  </button>
+                </div>
+              )}
               {selectedDocument && viewerReady && (
                 <Suspense
                   fallback={
