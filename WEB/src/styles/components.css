@@ -36,6 +36,212 @@
 }
 
 @layer components {
+  .certificate-dialog {
+    position: fixed;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    width: min(1180px, calc(100vw - 32px));
+    height: min(90dvh, 900px);
+    max-width: none;
+    max-height: calc(100dvh - 24px);
+    margin: auto;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid var(--card-line);
+    color: var(--fg);
+    background: var(--bg);
+    box-shadow: 0 24px 90px rgba(0, 0, 0, 0.7), 0 0 34px color-mix(in srgb, var(--brand) 12%, transparent);
+  }
+
+  .certificate-dialog[open] {
+    display: flex;
+  }
+
+  .certificate-dialog.is-fullscreen {
+    inset: 0;
+    width: 100vw;
+    height: 100dvh;
+    max-height: 100dvh;
+    margin: 0;
+    border: 0;
+  }
+
+  .certificate-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.78);
+    backdrop-filter: blur(5px);
+  }
+
+  .certificate-dialog__content {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    flex-direction: column;
+  }
+
+  .certificate-dialog__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex: 0 0 auto;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--card-line);
+    background: var(--card);
+  }
+
+  .certificate-dialog__toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex: 0 0 auto;
+    padding: 14px 24px;
+  }
+
+  .certificate-dialog__documents {
+    display: flex;
+    max-height: 24dvh;
+    flex: 0 0 auto;
+    gap: 8px;
+    padding: 0 24px 14px;
+    overflow: auto;
+  }
+
+  .certificate-document-group {
+    display: flex;
+    min-width: max-content;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .certificate-document-group__title {
+    color: var(--fg-faint);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .certificate-document-group__options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .certificate-document-option {
+    flex: 0 0 auto;
+    max-width: 220px;
+    padding: 8px 12px;
+    border: 1px solid var(--card-line);
+    color: var(--fg-muted);
+    background: var(--card);
+    font-size: 11px;
+    cursor: pointer;
+    transition: border-color 160ms ease, color 160ms ease;
+  }
+
+  .certificate-document-option:hover,
+  .certificate-document-option.is-selected {
+    border-color: var(--brand);
+    color: var(--brand);
+  }
+
+  .certificate-dialog__viewer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+    flex: 1 1 auto;
+    padding: 0 24px 20px;
+    overflow: hidden;
+    background: var(--card);
+  }
+
+  .certificate-dialog__viewer .react-pdf__Document {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .certificate-dialog__viewer .react-pdf__Page {
+    max-width: 100%;
+    max-height: 100%;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  .certificate-dialog__viewer .react-pdf__Page canvas {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  .certificate-page-button {
+    display: grid;
+    min-width: 32px;
+    height: 32px;
+    place-items: center;
+    border: 1px solid var(--card-line);
+    color: var(--fg);
+    background: var(--card);
+    cursor: pointer;
+    transition: border-color 160ms ease, color 160ms ease;
+  }
+
+  .certificate-page-button:hover:not(:disabled) {
+    border-color: var(--brand);
+    color: var(--brand);
+  }
+
+  .certificate-page-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
+
+  @media (max-width: 540px) {
+    .certificate-dialog {
+      width: calc(100vw - 20px);
+      max-height: calc(100dvh - 20px);
+    }
+
+    .certificate-dialog.is-fullscreen {
+      width: 100vw;
+      max-height: 100dvh;
+    }
+
+    .certificate-dialog__header {
+      padding: 16px;
+    }
+
+    .certificate-dialog__toolbar {
+      padding: 12px 16px;
+    }
+
+    .certificate-dialog__documents {
+      padding: 0 16px 12px;
+    }
+
+    .certificate-dialog__viewer {
+      padding: 0 8px 8px;
+    }
+
+    .certificate-dialog__toolbar {
+      gap: 8px;
+    }
+
+    .certificate-dialog__toolbar > div {
+      gap: 5px;
+    }
+
+    .certificate-dialog__toolbar > div > span {
+      font-size: 9px;
+    }
+  }
+
   /* ---- Hero -------------------------------------------------------------- */
 
   .terminal-cursor {
