@@ -38,8 +38,12 @@ export type IconName =
   | "minimize"
 
 /** Variante visual do mockup de cada projeto (ver `styles/components.css`). */
-export type ProjectVariant = "dashboard" | "store" | "portfolio"
+export type ProjectVariant = "dashboard" | "store" | "portfolio" | "marketplace"
 
-export type ProjectId = "nexus-dashboard" | "arc-store" | "personal-portfolio"
+export type ProjectId =
+  | "nexus-dashboard"
+  | "arc-store"
+  | "personal-portfolio"
+  | "madu-marketplace"
 
 export type CertificateId = "full-stack" | "other-courses"

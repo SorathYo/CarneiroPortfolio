@@ -68,6 +68,11 @@ export const en: Translations = {
         description:
           "A digital presence designed to showcase work and personality.",
       },
+      "madu-marketplace": {
+        title: "Madu Marketplace",
+        category: "WEB PLATFORM",
+        description: "A web platform created to showcase a tattoo artist's work.",
+      },
     },
   },
   certificates: {

@@ -69,6 +69,12 @@ export const pt: Translations = {
         description:
           "Uma presença digital criada para apresentar trabalho e personalidade.",
       },
+      "madu-marketplace": {
+        title: "Madu Marketplace",
+        category: "PLATAFORMA WEB",
+        description:
+          "Plataforma WEB criada com o objetivo de mostrar o trabalho de uma tatuadora",
+      },
     },
   },
   certificates: {

@@ -17,20 +17,29 @@ export default function Projects() {
               key={project.id}
               className="overflow-hidden border border-brand/35 bg-card transition duration-200 hover:-translate-y-[5px] hover:border-brand hover:shadow-[0_14px_40px_rgba(0,0,0,.5)] max-md:grid max-md:grid-cols-[.85fr_1.15fr] max-sm:block"
             >
-              {/* Mockup decorativo — estilos em styles/components.css */}
-              <div className="project-preview" data-variant={project.variant} aria-hidden="true">
-                <div className="preview-top">
-                  <i />
-                  <i />
-                  <i />
-                </div>
-                <div className="preview-sidebar" />
-                <div className="preview-content">
-                  <b />
-                  <span />
-                  <span />
-                  <span />
-                </div>
+              <div
+                className={`project-preview${project.image ? " project-preview--image" : ""}`}
+                data-variant={project.variant}
+                aria-hidden="true"
+              >
+                {project.image ? (
+                  <img src={project.image} alt="" />
+                ) : (
+                  <>
+                    <div className="preview-top">
+                      <i />
+                      <i />
+                      <i />
+                    </div>
+                    <div className="preview-sidebar" />
+                    <div className="preview-content">
+                      <b />
+                      <span />
+                      <span />
+                      <span />
+                    </div>
+                  </>
+                )}
               </div>
 
               <div className="p-[18px]">
