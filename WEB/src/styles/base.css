@@ -11,6 +11,7 @@
 
   body {
     min-height: 100vh;
+    cursor: default;
     background:
       radial-gradient(
         circle at 80% 10%,
