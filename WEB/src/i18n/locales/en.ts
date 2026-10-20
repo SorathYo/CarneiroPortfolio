@@ -10,6 +10,7 @@ export const en: Translations = {
     contato: "Contact",
   },
   navLabel: "Main navigation",
+  closeMenu: "Close menu",
   role: "FULL STACK DEVELOPER",
   quote: "“Discipline is what turns potential into results.”",
   accessibility: {

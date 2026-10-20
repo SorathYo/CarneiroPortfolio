@@ -4,6 +4,7 @@ import type { CertificateId, ProjectId, SectionId, Theme } from "@/types"
 export interface Translations {
   nav: Record<SectionId, string>
   navLabel: string
+  closeMenu: string
   role: string
   quote: string
   accessibility: {

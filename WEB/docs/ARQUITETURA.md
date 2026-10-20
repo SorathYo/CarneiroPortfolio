@@ -12,7 +12,7 @@
 | Pasta | Responsabilidade |
 | --- | --- |
 | `components/ui` | Blocos visuais sem regra de negócio: `Icon`, `Panel`, `SectionTitle`, `ButtonLink`, `Gear`, `UtilityButton`. |
-| `components/layout` | Estrutura fixa da página: `Sidebar`, `MobileHeader`, `UtilityDock`, `Footer`. |
+| `components/layout` | Estrutura fixa da página: `Sidebar` responsiva, `SidebarNavigation` compartilhada, `MobileHeader`, `UtilityDock`, `Footer`. |
 | `components/accessibility` | `AccessibilityMenu` (popover) e `SwitchRow` (interruptor `role="switch"`). |
 | `sections` | Uma seção da página por arquivo. `Work` agrupa `Skills` + `Projects` num painel duplo. |
 | `context` | `ThemeContext`, `LanguageContext`, `AccessibilityContext` + `AppProviders`. |
@@ -54,7 +54,9 @@ Todos lançam erro claro se usados fora do provider. Preferências persistem via
 - `usePersistentState(key, fallback, codec)` — `useState` + `localStorage` validado.
 - `useTypewriter(nome, cargos, resetKey)` — efeito de digitação do Hero; respeita `prefers-reduced-motion`.
 - `useDismiss(ref, onDismiss, active)` — fecha popover ao clicar fora ou apertar Esc.
-- `useActiveSection(ids)` — destaca no menu a seção em leitura (IntersectionObserver).
+- `useActiveSection(ids)` — destaca a última seção que alcançou a linha de leitura ao rolar ou redimensionar a página.
+
+No celular, o `MobileHeader` abre a mesma navegação da sidebar em um painel deslizante; selecionar um item navega até a seção e fecha o painel.
 
 ## Convenções
 

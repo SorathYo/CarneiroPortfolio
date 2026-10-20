@@ -2,38 +2,49 @@ import { useEffect, useState } from "react"
 import type { SectionId } from "@/types"
 
 /**
- * Descobre qual seção está cruzando a "linha de leitura" (um pouco acima do
- * meio da tela) para destacar o item correspondente no menu.
- *
- * `ids` deve estar na ordem do menu. Quando duas seções ficam visíveis ao
- * mesmo tempo (Habilidades e Projetos são lado a lado), vence a primeira da lista.
+ * Marca a última seção que já chegou à linha de leitura, evitando que uma seção
+ * anterior e alta continue ativa enquanto a pessoa percorre as seções seguintes.
  */
 export function useActiveSection(ids: readonly SectionId[]): SectionId {
   const [active, setActive] = useState<SectionId>(ids[0])
 
   useEffect(() => {
-    if (typeof IntersectionObserver === "undefined") return
+    let frame = 0
 
-    const visible = new Set<SectionId>()
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          const id = entry.target.id as SectionId
-          if (entry.isIntersecting) visible.add(id)
-          else visible.delete(id)
+    const updateActiveSection = () => {
+      cancelAnimationFrame(frame)
+      frame = requestAnimationFrame(() => {
+        const readingLine = window.innerHeight * 0.6
+        let next = ids[0]
+        let closestTop = Number.NEGATIVE_INFINITY
+
+        for (const id of ids) {
+          const element = document.getElementById(id)
+          if (!element) continue
+
+          const top = element.getBoundingClientRect().top
+          if (top <= readingLine && top > closestTop) {
+            next = id
+            closestTop = top
+          }
         }
-        const next = ids.find((id) => visible.has(id))
-        if (next) setActive(next)
-      },
-      // Faixa fina entre 40% e 45% da altura da viewport.
-      { rootMargin: "-40% 0px -55% 0px" },
-    )
 
-    for (const id of ids) {
-      const element = document.getElementById(id)
-      if (element) observer.observe(element)
+        if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2) {
+          next = ids.at(-1) ?? next
+        }
+
+        setActive((current) => (current === next ? current : next))
+      })
     }
-    return () => observer.disconnect()
+
+    updateActiveSection()
+    window.addEventListener("scroll", updateActiveSection, { passive: true })
+    window.addEventListener("resize", updateActiveSection)
+    return () => {
+      cancelAnimationFrame(frame)
+      window.removeEventListener("scroll", updateActiveSection)
+      window.removeEventListener("resize", updateActiveSection)
+    }
   }, [ids])
 
   return active

@@ -6,9 +6,9 @@ export default function App() {
   return (
     <div className="min-h-screen">
       <Sidebar />
+      <MobileHeader />
 
       <main className="ml-[225px] overflow-hidden max-lg:ml-[190px] max-md:ml-0">
-        <MobileHeader />
         <UtilityDock />
 
         <Hero />
