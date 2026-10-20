@@ -7,14 +7,19 @@ export const SITE = {
   /** Nome em caixa-alta usado no efeito de digitação do Hero. */
   displayName: "CAIO CARNEIRO",
   initials: "CC",
-  email: "caio.carneiro@email.com",
-  portrait: "/assets/caio-portrait.jpg",
+  email: "caiocarneirobastos@gmail.com",
+  portraits: {
+    dark: "/assets/ImagemNoite.png",
+    darkMobile: "/assets/caio-portrait.jpg",
+    light: "/assets/ImagemDia.png",
+    lightMobile: "/assets/caio-portrait-2.jpeg",
+  },
   social: {
-    github: { label: "GitHub", url: "https://github.com/" },
+    github: { label: "GitHub", url: "https://github.com/SorathYo" },
     linkedin: {
       label: "LinkedIn",
-      url: "https://linkedin.com/",
-      handle: "/in/caio-carneiro",
+      url: "https://www.linkedin.com/in/caio-carneiro-bastos",
+      handle: "/in/caio-carneiro-bastos",
     },
   },
 } as const

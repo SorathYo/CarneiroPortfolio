@@ -28,6 +28,7 @@ Para mudar a identidade visual, edite só o bloco `:root` (escuro) e `:root[data
 ## Temas
 
 - `ThemeContext` define `data-theme="dark|light"` no `<html>`. A escolha `auto` segue o sistema.
+- O Hero usa `ImagemNoite.png` no tema escuro e `ImagemDia.png` no tema claro em telas maiores; em celulares usa `caio-portrait.jpg` no tema escuro e `caio-portrait-2.jpeg` no tema claro. A troca faz crossfade e respeita movimento reduzido.
 - **Alto contraste** (`.high-contrast`) reforça `brand`, bordas e cores de texto — funciona em ambos os temas.
 - **Fonte maior** (`.large-text`) aumenta o `rem` (112,5%) e as classes `.copy` (parágrafos de leitura). Se criar um novo parágrafo de leitura, adicione a classe `copy`.
 

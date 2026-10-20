@@ -4,13 +4,14 @@
 
 | O que | Onde |
 | --- | --- |
-| E-mail, GitHub, LinkedIn, nome, foto | `src/data/site.ts` |
+| E-mail, GitHub, LinkedIn, nome, fotos por tema | `src/data/site.ts` |
 | Habilidades (tecnologias) | `src/data/skills.ts` |
 | Ordem/ícones do menu | `src/data/navigation.ts` |
 | Projetos: id, mockup, link | `src/data/projects.ts` |
 | Certificados: id, ano, link | `src/data/certificates.ts` |
 | Todos os textos visíveis | `src/i18n/locales/pt.ts` e `en.ts` |
-| Foto | `public/assets/caio-portrait.jpg` |
+| Foto noturna (tema escuro) | `public/assets/caio-portrait.jpg` |
+| Foto diurna (tema claro) | `public/assets/ImagemDia.png` |
 | Título/descrição da aba e SEO | `index.html` |
 
 ## Adicionar um projeto

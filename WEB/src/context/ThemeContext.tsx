@@ -4,6 +4,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useState,
   type ReactNode,
 } from "react"
 import { DEFAULT_THEME, STORAGE_KEYS, THEMES } from "@/constants"
@@ -14,6 +15,8 @@ import { oneOf } from "@/utils"
 interface ThemeContextValue {
   /** Preferência escolhida (inclui `auto`). */
   theme: Theme
+  /** Tema efetivamente aplicado, resolvendo `auto` pela preferência do sistema. */
+  resolvedTheme: ResolvedTheme
   setTheme: (theme: Theme) => void
   /** Ciclo do botão: dark → light → auto → dark. */
   cycleTheme: () => void
@@ -39,6 +42,10 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     DEFAULT_THEME,
     themeCodec,
   )
+  const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>(() => {
+    if (theme !== "auto") return theme
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+  })
 
   useEffect(() => {
     const root = document.documentElement
@@ -46,6 +53,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     const apply = () => {
       const resolved: ResolvedTheme =
         theme === "auto" ? (media.matches ? "dark" : "light") : theme
+      setResolvedTheme(resolved)
       root.dataset.theme = resolved
     }
     apply()
@@ -59,8 +67,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   )
 
   const value = useMemo(
-    () => ({ theme, setTheme, cycleTheme }),
-    [theme, setTheme, cycleTheme],
+    () => ({ theme, resolvedTheme, setTheme, cycleTheme }),
+    [theme, resolvedTheme, setTheme, cycleTheme],
   )
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>

@@ -1,12 +1,14 @@
 import { ButtonLink, Gear } from "@/components/ui"
-import { useLanguage } from "@/context"
+import { useLanguage, useTheme } from "@/context"
 import { SITE } from "@/data"
 import { useTypewriter } from "@/hooks"
 
 /** Primeira dobra: nome/cargo digitados, texto de apresentação, foto e valores. */
 export default function Hero() {
   const { t, language } = useLanguage()
+  const { resolvedTheme } = useTheme()
   const typed = useTypewriter(SITE.displayName, t.hero.roles, language)
+  const isDark = resolvedTheme === "dark"
 
   return (
     <section
@@ -56,12 +58,28 @@ export default function Hero() {
         </div>
       </div>
 
-      <div className="hero-photo absolute inset-y-0 right-0 left-[43%] max-md:inset-x-0 max-md:top-[68px] max-md:bottom-0 max-md:left-0">
-        <img
-          src={SITE.portrait}
-          alt={t.hero.photoAlt}
-          className="size-full object-cover object-[52%_50%] saturate-[.75] contrast-[1.16] max-md:object-[50%_35%]"
-        />
+      <div className="hero-photo absolute inset-0 z-[1] max-md:top-[68px]">
+        <picture
+          className={`hero-photo-image hero-photo-image--dark ${isDark ? "opacity-100" : "opacity-0"}`}
+        >
+          <source media="(max-width: 800px)" srcSet={SITE.portraits.darkMobile} />
+          <img
+            src={SITE.portraits.dark}
+            alt={t.hero.photoAlt}
+            className="hero-photo-mobile-image h-full w-full object-cover object-[75%_50%] saturate-[.75] contrast-[1.16] max-md:object-[50%_25%]"
+          />
+        </picture>
+        <picture
+          className={`hero-photo-image hero-photo-image--light ${isDark ? "opacity-0" : "opacity-100"}`}
+        >
+          <source media="(max-width: 800px)" srcSet={SITE.portraits.lightMobile} />
+          <img
+            src={SITE.portraits.light}
+            alt=""
+            aria-hidden="true"
+            className="hero-photo-mobile-image h-full w-full object-cover object-[75%_50%] max-md:object-[100%_50%]"
+          />
+        </picture>
       </div>
 
       <div
