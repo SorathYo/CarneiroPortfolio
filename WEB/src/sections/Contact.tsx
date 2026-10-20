@@ -22,7 +22,7 @@ export default function Contact() {
       </div>
 
       <div className="flex flex-col gap-3.5 max-lg:hidden">
-        <a className="flex items-center gap-[13px] text-[13px] text-fg-soft" href={mailto}>
+        <div className="flex items-center gap-[13px] text-[13px] text-fg-soft">
           <Icon name="mail" className="text-brand" />
           <span className="flex flex-col">
             <small className="mb-[3px] text-[8px] tracking-[1.5px] text-fg-faint">
@@ -30,7 +30,7 @@ export default function Contact() {
             </small>
             {SITE.email}
           </span>
-        </a>
+        </div>
         <a
           className="flex items-center gap-[13px] text-[13px] text-fg-soft"
           href={SITE.social.linkedin.url}
