@@ -44,7 +44,7 @@ main.tsx
 | Hook | Expõe | Efeito colateral |
 | --- | --- | --- |
 | `useLanguage()` | `language`, `setLanguage`, `toggleLanguage`, `t` | Atualiza `<html lang>` e salva no `localStorage`. |
-| `useTheme()` | `theme`, `setTheme`, `cycleTheme` | Define `<html data-theme="dark|light">`; em `auto` segue o sistema. |
+| `useTheme()` | `theme`, `resolvedTheme`, `setTheme`, `cycleTheme` | Define `<html data-theme="dark|light">`; em `auto` usa o tema claro das 6h às 18h e escuro no restante do horário local. |
 | `useAccessibility()` | `highContrast`, `largeText`, toggles | Liga as classes `high-contrast` / `large-text` no `<html>`. |
 
 Todos lançam erro claro se usados fora do provider. Preferências persistem via `usePersistentState` (valores inválidos no storage são descartados).

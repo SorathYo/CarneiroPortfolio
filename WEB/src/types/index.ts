@@ -1,7 +1,7 @@
 /** Idiomas suportados. Para adicionar um novo, veja docs/CONTEUDO-E-I18N.md */
 export type Language = "pt" | "en"
 
-/** Preferência de tema escolhida pelo usuário. `auto` segue o sistema operacional. */
+/** Preferência de tema escolhida pelo usuário. `auto` segue o horário local. */
 export type Theme = "dark" | "light" | "auto"
 
 /** Tema efetivamente aplicado no `<html data-theme>`. */

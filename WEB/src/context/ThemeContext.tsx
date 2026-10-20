@@ -28,12 +28,21 @@ const NEXT_THEME: Record<Theme, Theme> = {
   light: "auto",
   auto: "dark",
 }
+const DAY_THEME_START_HOUR = 6
+const NIGHT_THEME_START_HOUR = 18
+
+function getTimeBasedTheme(date = new Date()): ResolvedTheme {
+  const hour = date.getHours()
+  return hour >= DAY_THEME_START_HOUR && hour < NIGHT_THEME_START_HOUR
+    ? "light"
+    : "dark"
+}
 
 const ThemeContext = createContext<ThemeContextValue | null>(null)
 
 /**
  * Guarda a preferência de tema e a aplica em `<html data-theme="dark|light">`.
- * Em `auto`, acompanha o `prefers-color-scheme` do sistema em tempo real.
+ * Em `auto`, usa o tema claro das 6h às 18h e o escuro no restante do dia.
  * Os tokens de cor de cada tema vivem em `styles/theme.css`.
  */
 export function ThemeProvider({ children }: { children: ReactNode }) {
@@ -44,21 +53,46 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   )
   const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>(() => {
     if (theme !== "auto") return theme
-    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+    return getTimeBasedTheme()
   })
 
   useEffect(() => {
     const root = document.documentElement
-    const media = window.matchMedia("(prefers-color-scheme: dark)")
+    let timeoutId: number | undefined
+
     const apply = () => {
-      const resolved: ResolvedTheme =
-        theme === "auto" ? (media.matches ? "dark" : "light") : theme
+      const now = new Date()
+      const resolved = theme === "auto" ? getTimeBasedTheme(now) : theme
       setResolvedTheme(resolved)
       root.dataset.theme = resolved
+
+      if (theme === "auto") {
+        const nextTransition = new Date(now)
+        if (now.getHours() < DAY_THEME_START_HOUR) {
+          nextTransition.setHours(DAY_THEME_START_HOUR, 0, 0, 0)
+        } else if (now.getHours() < NIGHT_THEME_START_HOUR) {
+          nextTransition.setHours(NIGHT_THEME_START_HOUR, 0, 0, 0)
+        } else {
+          nextTransition.setDate(nextTransition.getDate() + 1)
+          nextTransition.setHours(DAY_THEME_START_HOUR, 0, 0, 0)
+        }
+        timeoutId = window.setTimeout(apply, nextTransition.getTime() - now.getTime())
+      }
     }
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        if (timeoutId !== undefined) window.clearTimeout(timeoutId)
+        apply()
+      }
+    }
+
     apply()
-    media.addEventListener("change", apply)
-    return () => media.removeEventListener("change", apply)
+    document.addEventListener("visibilitychange", handleVisibilityChange)
+    return () => {
+      if (timeoutId !== undefined) window.clearTimeout(timeoutId)
+      document.removeEventListener("visibilitychange", handleVisibilityChange)
+    }
   }, [theme])
 
   const cycleTheme = useCallback(
