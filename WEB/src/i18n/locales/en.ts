@@ -75,24 +75,36 @@ export const en: Translations = {
     intro:
       "Continuous learning turned into practical knowledge. Here are some of the courses that are part of my journey.",
     credential: "VIEW CREDENTIAL",
-    note: "These cards are ready to receive the official names, institutions, and links for your certificates.",
+    note: "Explore the Full Stack program, its microcertificates, and other courses.",
+    viewerLabel: "Certificate viewer",
+    closeViewer: "Close viewer",
+    viewMicroCertificates: "VIEW MICROCERTIFICATES",
+    hideMicroCertificates: "HIDE MICROCERTIFICATES",
+    viewOtherCourses: "VIEW OTHER COURSES",
+    hideOtherCourses: "HIDE OTHER COURSES",
+    fullScreen: "VIEW FULL SCREEN",
+    exitFullScreen: "EXIT FULL SCREEN",
+    previousPage: "Previous page",
+    nextPage: "Next page",
+    loadingPdf: "Loading certificate...",
+    pdfError: "Could not load this certificate. Please try again later.",
+    pageCount: (page, count) => `PAGE ${page} OF ${count}`,
+    otherCourseGroups: {
+      other: "Additional courses",
+      java: "Java",
+      "programming-logic": "Programming logic",
+    },
     items: {
       "full-stack": {
         title: "Full Stack Program",
         issuer: "Educational institution",
         description: "Building modern applications from front end to back end.",
       },
-      "react-typescript": {
-        title: "React & TypeScript",
-        issuer: "Learning platform",
+      "other-courses": {
+        title: "Other courses",
+        issuer: "Courses and microcertificates",
         description:
-          "Scalable interfaces, component architecture, and TypeScript best practices.",
-      },
-      databases: {
-        title: "Databases",
-        issuer: "Educational institution",
-        description:
-          "Data modeling, SQL queries, and data integration in web applications.",
+          "Additional training in Java, programming logic, design, and software practices.",
       },
     },
   },

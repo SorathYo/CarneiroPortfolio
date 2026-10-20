@@ -34,10 +34,12 @@ export type IconName =
   | "monitor"
   | "language"
   | "close"
+  | "maximize"
+  | "minimize"
 
 /** Variante visual do mockup de cada projeto (ver `styles/components.css`). */
 export type ProjectVariant = "dashboard" | "store" | "portfolio"
 
 export type ProjectId = "nexus-dashboard" | "arc-store" | "personal-portfolio"
 
-export type CertificateId = "full-stack" | "react-typescript" | "databases"
+export type CertificateId = "full-stack" | "other-courses"

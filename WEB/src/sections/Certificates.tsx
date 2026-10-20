@@ -1,10 +1,84 @@
+import { Suspense, lazy, useEffect, useRef, useState } from "react"
 import { Icon, Panel, SectionTitle } from "@/components/ui"
 import { useLanguage } from "@/context"
-import { CERTIFICATES } from "@/data"
+import {
+  CERTIFICATES,
+  FULL_STACK_CREDENTIAL_URL,
+  FULL_STACK_MICRO_CERTIFICATE_DOCUMENTS,
+  OTHER_COURSE_DOCUMENT_GROUPS,
+} from "@/data"
 import { formatIndex } from "@/utils"
+
+const CertificatePdf = lazy(() => import("./CertificatePdf"))
 
 export default function Certificates() {
   const { t } = useLanguage()
+  const dialogRef = useRef<HTMLDialogElement>(null)
+  const [selectedDocumentId, setSelectedDocumentId] = useState<string | null>(null)
+  const [activeCourse, setActiveCourse] = useState<"full-stack" | "other-courses">(
+    "full-stack",
+  )
+  const [showDocuments, setShowDocuments] = useState(false)
+  const [isFullscreen, setIsFullscreen] = useState(false)
+  const [viewerReady, setViewerReady] = useState(false)
+  const [pageCount, setPageCount] = useState(0)
+  const [pageNumber, setPageNumber] = useState(1)
+
+  const closeViewer = () => {
+    dialogRef.current?.close()
+  }
+
+  useEffect(() => {
+    if (selectedDocumentId && dialogRef.current && !dialogRef.current.open) {
+      dialogRef.current.showModal()
+      setViewerReady(true)
+    }
+  }, [selectedDocumentId])
+
+  const openCourse = (course: "full-stack" | "other-courses") => {
+    setActiveCourse(course)
+    setPageCount(0)
+    setPageNumber(1)
+    setIsFullscreen(false)
+    setShowDocuments(course === "other-courses")
+    setSelectedDocumentId(course === "full-stack" ? "full-stack" : "figma")
+  }
+
+  const selectDocument = (id: string) => {
+    setPageCount(0)
+    setPageNumber(1)
+    setSelectedDocumentId(id)
+  }
+
+  const selectedDocument =
+    activeCourse === "full-stack"
+      ? selectedDocumentId === "full-stack"
+        ? {
+            title: t.certificates.items["full-stack"].title,
+            src: FULL_STACK_CREDENTIAL_URL,
+          }
+        : FULL_STACK_MICRO_CERTIFICATE_DOCUMENTS.find(
+            (document) => document.id === selectedDocumentId,
+          )
+      : OTHER_COURSE_DOCUMENT_GROUPS.flatMap((group) => group.documents).find(
+          (document) => document.id === selectedDocumentId,
+        )
+
+  const courseToggleLabel =
+    activeCourse === "full-stack"
+      ? showDocuments
+        ? t.certificates.hideMicroCertificates
+        : t.certificates.viewMicroCertificates
+      : showDocuments
+        ? t.certificates.hideOtherCourses
+        : t.certificates.viewOtherCourses
+  const pageHeight = Math.max(
+    90,
+    Math.min(
+      window.innerHeight * (isFullscreen ? 0.72 : 0.52),
+      window.innerHeight - (isFullscreen ? 220 : 280),
+    ),
+  )
 
   return (
     <Panel
@@ -18,7 +92,7 @@ export default function Certificates() {
         </p>
       </div>
 
-      <div className="mt-[34px] grid grid-cols-3 gap-[15px] max-lg:grid-cols-2 max-sm:grid-cols-1">
+      <div className="mt-[34px] grid grid-cols-2 gap-[15px] max-sm:grid-cols-1">
         {CERTIFICATES.map((certificate, index) => {
           const text = t.certificates.items[certificate.id]
           return (
@@ -45,20 +119,198 @@ export default function Certificates() {
                 {text.description}
               </p>
               <div className="absolute inset-x-[25px] bottom-[22px] z-[1] flex items-center justify-between">
-                <span className="text-[11px] tracking-[1.5px] text-fg-faint">{certificate.year}</span>
-                <a
-                  href={certificate.href}
-                  className="flex items-center gap-[7px] text-[10px] font-bold tracking-[1px] text-brand"
+                <span className="text-[11px] tracking-[1.5px] text-fg-faint">
+                  {certificate.year}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => openCourse(certificate.id)}
+                  className="flex cursor-pointer items-center gap-[7px] border-0 bg-transparent p-0 text-[10px] font-bold tracking-[1px] text-brand"
                 >
                   {t.certificates.credential} <Icon name="arrow" size={16} />
-                </a>
+                </button>
               </div>
             </article>
           )
         })}
       </div>
 
-      <p className="mt-[22px] text-[10px] tracking-[0.8px] text-fg-faint">{t.certificates.note}</p>
+      <p className="mt-[22px] text-[10px] tracking-[0.8px] text-fg-faint">
+        {t.certificates.note}
+      </p>
+
+      {selectedDocumentId && (
+        <dialog
+          ref={dialogRef}
+          aria-labelledby="certificate-viewer-title"
+          className={`certificate-dialog${isFullscreen ? " is-fullscreen" : ""}`}
+          onClose={() => {
+            setSelectedDocumentId(null)
+            setShowDocuments(false)
+            setIsFullscreen(false)
+            setViewerReady(false)
+          }}
+          onCancel={(event) => {
+            event.preventDefault()
+            closeViewer()
+          }}
+          onClick={(event) => {
+            if (event.target === event.currentTarget) closeViewer()
+          }}
+        >
+          <div className="certificate-dialog__content">
+            <header className="certificate-dialog__header">
+              <div>
+                <span className="text-[9px] font-bold tracking-[1.5px] text-brand uppercase">
+                  {t.certificates.viewerLabel}
+                </span>
+                <h2
+                  id="certificate-viewer-title"
+                  className="mt-1 font-display text-2xl font-bold text-fg uppercase"
+                >
+                  {selectedDocument?.title}
+                </h2>
+              </div>
+              <button
+                type="button"
+                onClick={closeViewer}
+                aria-label={t.certificates.closeViewer}
+                className="grid size-10 shrink-0 cursor-pointer place-items-center border border-card-line bg-card text-fg transition hover:border-brand hover:text-brand"
+              >
+                <Icon name="close" />
+              </button>
+            </header>
+
+            <div className="certificate-dialog__toolbar">
+              <button
+                type="button"
+                aria-expanded={showDocuments}
+                onClick={() => setShowDocuments((visible) => !visible)}
+                className="flex cursor-pointer items-center gap-2 border border-card-line bg-card px-3 py-2 text-[10px] font-bold tracking-[1px] text-brand transition hover:border-brand"
+              >
+                <Icon name="layers" size={17} />
+                {courseToggleLabel}
+              </button>
+              <div className="flex items-center gap-3">
+                {pageCount > 0 && (
+                  <>
+                    <button
+                      type="button"
+                      aria-label={t.certificates.previousPage}
+                      disabled={pageNumber <= 1}
+                      onClick={() => setPageNumber((page) => Math.max(1, page - 1))}
+                      className="certificate-page-button"
+                    >
+                      &lt;
+                    </button>
+                    <span className="text-[11px] tracking-[1px] text-fg-muted">
+                      {t.certificates.pageCount(pageNumber, pageCount)}
+                    </span>
+                    <button
+                      type="button"
+                      aria-label={t.certificates.nextPage}
+                      disabled={pageNumber >= pageCount}
+                      onClick={() =>
+                        setPageNumber((page) => Math.min(pageCount, page + 1))
+                      }
+                      className="certificate-page-button"
+                    >
+                      &gt;
+                    </button>
+                  </>
+                )}
+                <button
+                  type="button"
+                  aria-label={
+                    isFullscreen
+                      ? t.certificates.exitFullScreen
+                      : t.certificates.fullScreen
+                  }
+                  aria-pressed={isFullscreen}
+                  onClick={() => setIsFullscreen((value) => !value)}
+                  className="certificate-page-button"
+                >
+                  <Icon name={isFullscreen ? "minimize" : "maximize"} size={18} />
+                </button>
+              </div>
+            </div>
+
+            {showDocuments && (
+              <nav
+                aria-label={courseToggleLabel}
+                className="certificate-dialog__documents"
+              >
+                {activeCourse === "full-stack" ? (
+                  <>
+                    <button
+                      type="button"
+                      aria-pressed={selectedDocumentId === "full-stack"}
+                      onClick={() => selectDocument("full-stack")}
+                      className={`certificate-document-option${selectedDocumentId === "full-stack" ? " is-selected" : ""}`}
+                    >
+                      {t.certificates.items["full-stack"].title}
+                    </button>
+                    {FULL_STACK_MICRO_CERTIFICATE_DOCUMENTS.map((document) => (
+                      <button
+                        key={document.id}
+                        type="button"
+                        aria-pressed={selectedDocumentId === document.id}
+                        onClick={() => selectDocument(document.id)}
+                        className={`certificate-document-option${selectedDocumentId === document.id ? " is-selected" : ""}`}
+                      >
+                        {document.title}
+                      </button>
+                    ))}
+                  </>
+                ) : (
+                  OTHER_COURSE_DOCUMENT_GROUPS.map((group) => (
+                    <div key={group.id} className="certificate-document-group">
+                      <span className="certificate-document-group__title">
+                        {t.certificates.otherCourseGroups[group.id]}
+                      </span>
+                      <div className="certificate-document-group__options">
+                        {group.documents.map((document) => (
+                          <button
+                            key={document.id}
+                            type="button"
+                            aria-pressed={selectedDocumentId === document.id}
+                            onClick={() => selectDocument(document.id)}
+                            className={`certificate-document-option${selectedDocumentId === document.id ? " is-selected" : ""}`}
+                          >
+                            {document.title}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  ))
+                )}
+              </nav>
+            )}
+
+            <div className="certificate-dialog__viewer">
+              {selectedDocument && viewerReady && (
+                <Suspense
+                  fallback={
+                    <p className="p-8 text-center text-sm text-fg-muted">
+                      {t.certificates.loadingPdf}
+                    </p>
+                  }
+                >
+                  <CertificatePdf
+                    key={selectedDocumentId}
+                    file={selectedDocument.src}
+                    pageNumber={pageNumber}
+                    pageHeight={pageHeight}
+                    loadingLabel={t.certificates.loadingPdf}
+                    errorLabel={t.certificates.pdfError}
+                    onPageCountChange={setPageCount}
+                  />
+                </Suspense>
+              )}
+            </div>
+          </div>
+        </dialog>
+      )}
     </Panel>
   )
 }

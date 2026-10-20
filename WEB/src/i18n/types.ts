@@ -56,10 +56,24 @@ export interface Translations {
     intro: string
     credential: string
     note: string
+    viewerLabel: string
+    closeViewer: string
+    viewMicroCertificates: string
+    hideMicroCertificates: string
+    viewOtherCourses: string
+    hideOtherCourses: string
+    fullScreen: string
+    exitFullScreen: string
+    previousPage: string
+    nextPage: string
+    loadingPdf: string
+    pdfError: string
+    pageCount: (page: number, count: number) => string
     items: Record<
       CertificateId,
       { title: string; issuer: string; description: string }
     >
+    otherCourseGroups: Record<"other" | "java" | "programming-logic", string>
   }
   contact: {
     eyebrow: string

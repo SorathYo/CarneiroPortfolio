@@ -76,7 +76,25 @@ export const pt: Translations = {
     intro:
       "Aprendizado contínuo transformado em conhecimento prático. Aqui estão algumas das formações que fazem parte da minha jornada.",
     credential: "VER CREDENCIAL",
-    note: "Estes cards estão prontos para receber os nomes, instituições e links oficiais dos seus certificados.",
+    note: "Consulte a formação Full Stack, seus microcertificados e outros cursos.",
+    viewerLabel: "Visualizador de certificado",
+    closeViewer: "Fechar visualizador",
+    viewMicroCertificates: "VER MICROCERTIFICADOS",
+    hideMicroCertificates: "OCULTAR MICROCERTIFICADOS",
+    viewOtherCourses: "VER OUTROS CURSOS",
+    hideOtherCourses: "OCULTAR OUTROS CURSOS",
+    fullScreen: "VER EM TELA CHEIA",
+    exitFullScreen: "SAIR DA TELA CHEIA",
+    previousPage: "Página anterior",
+    nextPage: "Próxima página",
+    loadingPdf: "Carregando certificado...",
+    pdfError: "Não foi possível carregar este certificado. Tente novamente mais tarde.",
+    pageCount: (page, count) => `PÁGINA ${page} DE ${count}`,
+    otherCourseGroups: {
+      other: "Cursos complementares",
+      java: "Java",
+      "programming-logic": "Lógica de programação",
+    },
     items: {
       "full-stack": {
         title: "Formação Full Stack",
@@ -84,17 +102,11 @@ export const pt: Translations = {
         description:
           "Desenvolvimento de aplicações modernas do front-end ao back-end.",
       },
-      "react-typescript": {
-        title: "React & TypeScript",
-        issuer: "Plataforma de cursos",
+      "other-courses": {
+        title: "Outros cursos",
+        issuer: "Cursos e microcertificados",
         description:
-          "Interfaces escaláveis, componentização e boas práticas com TypeScript.",
-      },
-      databases: {
-        title: "Banco de Dados",
-        issuer: "Instituição de ensino",
-        description:
-          "Modelagem, consultas SQL e integração de dados em aplicações web.",
+          "Formações complementares em Java, lógica de programação, design e boas práticas.",
       },
     },
   },
