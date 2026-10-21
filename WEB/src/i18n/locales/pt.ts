@@ -122,7 +122,9 @@ export const pt: Translations = {
     title: "Vamos criar algo incrível?",
     copy: "Estou aberto a novas oportunidades, colaborações e projetos ambiciosos.",
     email: "E-MAIL",
-    button: "ENTRAR EM CONTATO",
+    linkedin: "LINKEDIN",
+    instagram: "INSTAGRAM",
+    whatsapp: "WHATSAPP",
   },
   footer: [
     "DESENVOLVIDO COM DEDICAÇÃO E MUITO ENERGÉTICO",

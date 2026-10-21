@@ -25,6 +25,8 @@ export type IconName =
   | "arrow"
   | "github"
   | "linkedin"
+  | "instagram"
+  | "whatsapp"
   | "target"
   | "spark"
   | "layers"

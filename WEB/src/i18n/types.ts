@@ -81,7 +81,9 @@ export interface Translations {
     title: string
     copy: string
     email: string
-    button: string
+    linkedin: string
+    instagram: string
+    whatsapp: string
   }
   footer: readonly [string, string]
 }
